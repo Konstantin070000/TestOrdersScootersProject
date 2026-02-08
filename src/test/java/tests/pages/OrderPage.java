@@ -1,0 +1,73 @@
+package tests.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class OrderPage {
+
+    private WebDriver driver;
+    private WebDriverWait wait;
+
+    public OrderPage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, 5);
+
+    }
+
+    // ===== ЛОКАТОРЫ ПЕРВОЙ СТРАНИЦЫ =====
+    private By firstNameField = By.xpath("//input[@placeholder='* Имя']");
+    private By lastNameField = By.xpath("//input[@placeholder='* Фамилия']");
+    private By addressField = By.xpath("//input[@placeholder='* Адрес: куда привезти заказ']");
+    private By metroField = By.className("select-search__input");
+    private By phoneField = By.xpath("//input[@placeholder='* Телефон: на него позвонит курьер']");
+
+    private By nextButton = By.xpath("//button[text()='Далее']");
+
+    // ===== ВТОРАЯ СТРАНИЦА ЗАКАЗА =====
+    private By orderButton = By.xpath("//button[text()='Заказать']");
+    private By confirmButton = By.xpath("//button[text()='Да']");
+
+    // ===== МОДАЛЬНОЕ ОКНО =====
+    private By successModal = By.className("Order_Modal__YZ-d3");
+
+    // ===== МЕТОДЫ =====
+    public void fillFirstName(String firstName) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameField)).sendKeys(firstName);
+    }
+
+    public void fillLastName(String lastName) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(lastNameField)).sendKeys(lastName);
+    }
+
+    public void fillAddress(String address) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(addressField)).sendKeys(address);
+    }
+
+    public void fillPhone(String phone) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(phoneField)).sendKeys(phone);
+    }
+
+    public void selectMetro(String metro) {
+        wait.until(ExpectedConditions.elementToBeClickable(metroField)).sendKeys(metro);
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//div[contains(@class,'select-search__option')]"))).click();
+    }
+
+    public void clickNext() {
+        wait.until(ExpectedConditions.elementToBeClickable(nextButton)).click();
+    }
+
+    public void clickOrder() {
+        wait.until(ExpectedConditions.elementToBeClickable(orderButton)).click();
+    }
+
+    public void clickConfirm() {
+        wait.until(ExpectedConditions.elementToBeClickable(confirmButton)).click();
+    }
+
+    public boolean isOrderSuccessModalDisplayed() {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(successModal)).isDisplayed();
+    }
+}
