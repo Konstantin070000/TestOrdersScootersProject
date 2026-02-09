@@ -75,4 +75,3 @@ public class MainPage {
         wait.until(ExpectedConditions.elementToBeClickable(cookieButton)).click();
     }
 }
-

@@ -12,8 +12,7 @@ public class OrderPage {
 
     public OrderPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, 5);
-
+        this.wait = new WebDriverWait(driver, 10);
     }
 
     // ===== ЛОКАТОРЫ ПЕРВОЙ СТРАНИЦЫ =====
@@ -21,18 +20,20 @@ public class OrderPage {
     private By lastNameField = By.xpath("//input[@placeholder='* Фамилия']");
     private By addressField = By.xpath("//input[@placeholder='* Адрес: куда привезти заказ']");
     private By metroField = By.className("select-search__input");
+    private By metroOption = By.xpath("//div[contains(@class,'select-search__option')]");
     private By phoneField = By.xpath("//input[@placeholder='* Телефон: на него позвонит курьер']");
 
     private By nextButton = By.xpath("//button[text()='Далее']");
 
-    // ===== ВТОРАЯ СТРАНИЦА ЗАКАЗА =====
+    // ===== ВТОРАЯ СТРАНИЦА =====
     private By orderButton = By.xpath("//button[text()='Заказать']");
     private By confirmButton = By.xpath("//button[text()='Да']");
 
-    // ===== МОДАЛЬНОЕ ОКНО =====
+    // ===== МОДАЛКА УСПЕХА =====
     private By successModal = By.className("Order_Modal__YZ-d3");
 
-    // ===== МЕТОДЫ =====
+    // ===== МЕТОДЫ ЗАПОЛНЕНИЯ =====
+
     public void fillFirstName(String firstName) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameField)).sendKeys(firstName);
     }
@@ -51,8 +52,17 @@ public class OrderPage {
 
     public void selectMetro(String metro) {
         wait.until(ExpectedConditions.elementToBeClickable(metroField)).sendKeys(metro);
-        wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//div[contains(@class,'select-search__option')]"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(metroOption)).click();
+    }
+
+    // ===== ОБЪЕДИНЁННЫЙ МЕТОД (ЭТО ТРЕБОВАНИЕ РЕВЬЮЕРА) =====
+    public void fillOrderForm(String firstName, String lastName,
+                              String address, String metro, String phone) {
+        fillFirstName(firstName);
+        fillLastName(lastName);
+        fillAddress(address);
+        selectMetro(metro);
+        fillPhone(phone);
     }
 
     public void clickNext() {
@@ -71,3 +81,4 @@ public class OrderPage {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(successModal)).isDisplayed();
     }
 }
+
