@@ -1,13 +1,12 @@
 package tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import tests.pages.MainPage;
+import pages.MainPage;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 public class AccordionTest {
 
     private WebDriver driver;
+    private MainPage mainPage;
     private final int questionIndex;
 
     public AccordionTest(int questionIndex) {
@@ -27,25 +27,21 @@ public class AccordionTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {0},
-                {1},
-                {2},
-                {3},
-                {4},
-                {5},
-                {6},
-                {7}
+                {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}
         });
+    }
+
+    @Before
+    public void setUp() {
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+        mainPage = new MainPage(driver);
+        mainPage.open();
+        mainPage.acceptCookies();
     }
 
     @Test
     public void checkAccordionAnswerIsDisplayed() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-
-        MainPage mainPage = new MainPage(driver);
-        mainPage.open();
-        mainPage.acceptCookies();
         mainPage.clickQuestion(questionIndex);
 
         assertTrue(
@@ -56,6 +52,8 @@ public class AccordionTest {
 
     @After
     public void tearDown() {
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }

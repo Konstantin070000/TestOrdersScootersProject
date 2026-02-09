@@ -1,4 +1,4 @@
-package tests.pages;
+package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,7 +22,6 @@ public class OrderPage {
     private By metroField = By.className("select-search__input");
     private By metroOption = By.xpath("//div[contains(@class,'select-search__option')]");
     private By phoneField = By.xpath("//input[@placeholder='* Телефон: на него позвонит курьер']");
-
     private By nextButton = By.xpath("//button[text()='Далее']");
 
     // ===== ВТОРАЯ СТРАНИЦА =====
@@ -32,7 +31,7 @@ public class OrderPage {
     // ===== МОДАЛКА УСПЕХА =====
     private By successModal = By.className("Order_Modal__YZ-d3");
 
-    // ===== МЕТОДЫ ЗАПОЛНЕНИЯ =====
+    // ===== МЕТОДЫ =====
 
     public void fillFirstName(String firstName) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameField)).sendKeys(firstName);
@@ -50,12 +49,21 @@ public class OrderPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(phoneField)).sendKeys(phone);
     }
 
-    public void selectMetro(String metro) {
-        wait.until(ExpectedConditions.elementToBeClickable(metroField)).sendKeys(metro);
-        wait.until(ExpectedConditions.elementToBeClickable(metroOption)).click();
+    // шаблон локатора храним в поле класса
+    private static final String METRO_OPTION_BY_TEXT =
+            "//div[contains(@class,'select-search__option') and text()='%s']";
+
+    private By metroOption(String metro) {
+        return By.xpath(String.format(METRO_OPTION_BY_TEXT, metro));
     }
 
-    // ===== ОБЪЕДИНЁННЫЙ МЕТОД (ЭТО ТРЕБОВАНИЕ РЕВЬЮЕРА) =====
+    public void selectMetro(String metro) {
+        wait.until(ExpectedConditions.elementToBeClickable(metroField)).sendKeys(metro);
+        wait.until(ExpectedConditions.elementToBeClickable(metroOption(metro))).click();
+    }
+
+
+    // объединённый метод
     public void fillOrderForm(String firstName, String lastName,
                               String address, String metro, String phone) {
         fillFirstName(firstName);
