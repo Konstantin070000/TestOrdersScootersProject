@@ -20,7 +20,6 @@ public class OrderPage {
     private By lastNameField = By.xpath("//input[@placeholder='* Фамилия']");
     private By addressField = By.xpath("//input[@placeholder='* Адрес: куда привезти заказ']");
     private By metroField = By.className("select-search__input");
-    private By metroOption = By.xpath("//div[contains(@class,'select-search__option')]");
     private By phoneField = By.xpath("//input[@placeholder='* Телефон: на него позвонит курьер']");
     private By nextButton = By.xpath("//button[text()='Далее']");
 

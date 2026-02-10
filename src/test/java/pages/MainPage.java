@@ -42,6 +42,12 @@ public class MainPage {
                 .isDisplayed();
     }
 
+    public String getAnswerText(int index) {
+        return wait
+                .until(ExpectedConditions.visibilityOfElementLocated(answer(index)))
+                .getText();
+    }
+
     // ===== КНОПКИ "ЗАКАЗАТЬ" =====
     private By orderButtonTop =
             By.xpath("//button[contains(@class,'Button_Button') and text()='Заказать']");
@@ -72,6 +78,11 @@ public class MainPage {
     }
 
     public void acceptCookies() {
-        wait.until(ExpectedConditions.elementToBeClickable(cookieButton)).click();
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(cookieButton)).click();
+        } catch (org.openqa.selenium.TimeoutException | org.openqa.selenium.NoSuchElementException e) {
+            // Кнопки куки нет — значит баннер не показался или куки уже приняты. Это нормально.
+        }
+
     }
 }
